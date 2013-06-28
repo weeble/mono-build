@@ -163,6 +163,36 @@ build_package_mono_source() {
 	} >&4 2>&1
 }
 
+build_package_libgdiplus_source() {
+	local package_name="$1"
+
+	local options=""
+	if [ "Darwin" = "$(uname)" ]; then
+		options="--with-glib=embedded --enable-nls=no"
+	fi
+	{
+	  patch -p1 <<END_OF_PATCH
+diff --git a/tests/Makefile.am b/tests/Makefile.am
+index 5b8c67c..24aa525 100644
+--- a/tests/Makefile.am
++++ b/tests/Makefile.am
+@@ -11,7 +11,8 @@ DEPS =						\\
+ 
+ 
+ LDADDS =					\\
+-	\$(top_builddir)/src/libgdiplus.la
++	\$(top_builddir)/src/libgdiplus.la	\\
++	\$(GDIPLUS_LIBS)
+ 
+ noinst_PROGRAMS =			\\
+ 	testgdi testbits testclip testreversepath
+END_OF_PATCH
+	  ./autogen.sh --prefix="$PREFIX_PATH" $options
+	  make
+	  make install
+	} >&4 2>&1
+}
+
 require_gcc() {
 	local gcc="$(locate_gcc || true)"
 	if [ -z "$gcc" ]; then
