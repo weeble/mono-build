@@ -1,2 +1,2 @@
 install_git "libgdiplus-git" "git@github.com:mono/libgdiplus.git" "master" libgdiplus_source
-install_git "mono-2.11.0" "git@github.com:mono/mono.git" "mono-2.11.0" mono_source
+install_git "mono-3.0.11" "git@github.com:mono/mono.git" "mono-3.0.11" mono_source
